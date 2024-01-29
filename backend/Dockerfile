@@ -12,7 +12,6 @@ COPY ./apps/${service}/ ./apps/${service}/
 FROM prebuild as dev
 ARG service=counting
 ENV SERVICE=${service}
-COPY ./apps/ ./apps/
 CMD npx nest start $SERVICE --watch
 
 FROM base as prod_dependencies
