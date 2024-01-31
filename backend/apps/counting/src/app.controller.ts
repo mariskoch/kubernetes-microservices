@@ -3,7 +3,8 @@ import { AppService } from './app.service';
 import CreateCounterDto from './dtos/create-counter.dto';
 import Counter from './counter.interface';
 import IncrementCounterDto from './dtos/increment-counter.dto';
-import DecrementCounterDto from "./dtos/decrement-counter.dto";
+import DecrementCounterDto from './dtos/decrement-counter.dto';
+import SetCounterDto from "./dtos/set-counter.dto";
 
 @Controller()
 export class AppController {
@@ -33,10 +34,18 @@ export class AppController {
   }
 
   @Post('/decrement/:name')
-    decrementCounter(
-        @Param('name') counterName: string,
-        @Body() decrementCounter: DecrementCounterDto
-    ): Counter {
-        return this.appService.decrementCounter(counterName, decrementCounter);
-    }
+  decrementCounter(
+    @Param('name') counterName: string,
+    @Body() decrementCounter: DecrementCounterDto,
+  ): Counter {
+    return this.appService.decrementCounter(counterName, decrementCounter);
+  }
+
+  @Post('/set/:name')
+  setCounter(
+    @Param('name') counterName: string,
+    @Body() setCounter: SetCounterDto,
+  ): Counter {
+    return this.appService.setCounter(counterName, setCounter);
+  }
 }
