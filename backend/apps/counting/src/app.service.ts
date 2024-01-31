@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import CreateCounterDto from './dtos/create-counter.dto';
 import Counter from './counter.interface';
-import {IncrementCounterDto} from "./dtos/increment-counter.dto";
+import IncrementCounterDto from "./dtos/increment-counter.dto";
+import DecrementCounterDto from "./dtos/decrement-counter.dto";
 
 @Injectable()
 export class AppService {
@@ -33,16 +34,29 @@ export class AppService {
     return counter;
   }
 
-  incrementCounter(name: string, incrementCounter?: IncrementCounterDto): Counter {
+  incrementCounter(name: string, incrementCounterOptions?: IncrementCounterDto): Counter {
     const counter = this.counters.find((counter) => counter.name === name);
     if (!counter) {
       throw new NotFoundException(`Counter with name ${name} does not exist`);
     }
-    if (incrementCounter?.incrementBy) {
-      counter.count += incrementCounter.incrementBy;
+    if (incrementCounterOptions?.incrementBy) {
+      counter.count += incrementCounterOptions.incrementBy;
       return counter;
     }
     counter.count++;
+    return counter;
+  }
+
+  decrementCounter(name: string, decrementCounterOptions?: DecrementCounterDto): Counter {
+    const counter = this.counters.find((counter) => counter.name === name);
+    if (!counter) {
+      throw new NotFoundException(`Counter with name ${name} does not exist`);
+    }
+    if (decrementCounterOptions?.decrementBy) {
+      counter.count -= decrementCounterOptions.decrementBy;
+      return counter;
+    }
+    counter.count--;
     return counter;
   }
 

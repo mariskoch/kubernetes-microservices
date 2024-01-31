@@ -1,6 +1,6 @@
 import {IsNumber, IsOptional, Max, Min} from 'class-validator';
 
-export class IncrementCounterDto {
+export default class IncrementCounterDto {
   @IsOptional()
   @IsNumber()
   @Min(0)

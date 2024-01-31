@@ -2,7 +2,8 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import CreateCounterDto from './dtos/create-counter.dto';
 import Counter from './counter.interface';
-import { IncrementCounterDto } from './dtos/increment-counter.dto';
+import IncrementCounterDto from './dtos/increment-counter.dto';
+import DecrementCounterDto from "./dtos/decrement-counter.dto";
 
 @Controller()
 export class AppController {
@@ -30,4 +31,12 @@ export class AppController {
   ): Counter {
     return this.appService.incrementCounter(counterName, incrementCounter);
   }
+
+  @Post('/decrement/:name')
+    decrementCounter(
+        @Param('name') counterName: string,
+        @Body() decrementCounter: DecrementCounterDto
+    ): Counter {
+        return this.appService.decrementCounter(counterName, decrementCounter);
+    }
 }
