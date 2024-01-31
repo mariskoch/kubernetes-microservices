@@ -1,10 +1,10 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import CreateCounterDto from './dtos/create-counter.dto';
-
-export interface Counter {
-  name: string;
-  count: number;
-}
+import Counter from './counter.interface';
 
 @Injectable()
 export class AppService {
@@ -22,6 +22,14 @@ export class AppService {
 
   getCounters(): Counter[] {
     return this.counters;
+  }
+
+  getCounter(name: string): Counter {
+    const counter = this.counters.find((counter) => counter.name === name);
+    if (!counter) {
+      throw new NotFoundException(`Counter with name ${name} does not exist`);
+    }
+    return counter;
   }
 
   private doesCounterAlreadyExistByName(name: string): boolean {
