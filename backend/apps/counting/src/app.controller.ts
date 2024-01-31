@@ -4,7 +4,7 @@ import CreateCounterDto from './dtos/create-counter.dto';
 import Counter from './counter.interface';
 import IncrementCounterDto from './dtos/increment-counter.dto';
 import DecrementCounterDto from './dtos/decrement-counter.dto';
-import SetCounterDto from "./dtos/set-counter.dto";
+import SetCounterDto from './dtos/set-counter.dto';
 
 @Controller()
 export class AppController {

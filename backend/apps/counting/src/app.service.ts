@@ -44,8 +44,6 @@ export class AppService {
       throw new NotFoundException(`Counter with name ${name} does not exist`);
     }
     if (incrementCounterOptions?.incrementBy) {
-      // round down to nearest integer
-
       counter.count += Math.floor(incrementCounterOptions.incrementBy);
       return counter;
     }
