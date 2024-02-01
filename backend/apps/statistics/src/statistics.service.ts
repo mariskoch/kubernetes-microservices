@@ -30,7 +30,7 @@ export class StatisticsService {
   private async fetchCounters(): Promise<Counter[]> {
     try {
       // TODO: replace with call to ClusterIP service of counting
-      const counters = await fetch('http://localhost:3000/counters');
+      const counters = await fetch('http://localhost:3001/counters');
       return (await counters.json()) as Counter[];
     } catch (error) {
       throw new InternalServerErrorException('Could not fetch counters');
