@@ -20,6 +20,13 @@ export default function Home({searchParams}: { searchParams: { [key: string]: st
         event.preventDefault();
         const data = Object.fromEntries(new FormData(event.target as HTMLFormElement));
         console.log(data);
+        fetch('/api/submit', {
+            method: 'POST',
+        }).then((res) => {
+
+        }).catch((err) => {
+
+        });
 
         //navigateHome();
     }

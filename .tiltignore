@@ -1,0 +1,9 @@
+**/node_modules
+**/dist
+**/.idea
+**/.git
+**/.dockerignore
+**/.gitignore
+**/docker-compose.yaml
+**/README.md
+**/.next

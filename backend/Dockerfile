@@ -9,6 +9,7 @@ ARG service=counting
 COPY package*.json ./
 RUN npm ci --include=dev
 COPY tsconfig.json tsconfig.build.json nest-cli.json .prettierrc .eslintrc.js ./
+COPY ./shared/ ./shared/
 COPY ./apps/${service}/ ./apps/${service}/
 
 FROM prebuild as dev

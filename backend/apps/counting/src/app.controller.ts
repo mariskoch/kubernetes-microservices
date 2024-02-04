@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import CreateCounterDto from './dtos/create-counter.dto';
-import Counter from './counter.interface';
+import Counter from '../../../shared/counter.interface';
 import IncrementCounterDto from './dtos/increment-counter.dto';
 import DecrementCounterDto from './dtos/decrement-counter.dto';
 import SetCounterDto from './dtos/set-counter.dto';
@@ -47,5 +47,10 @@ export class AppController {
     @Body() setCounter: SetCounterDto,
   ): Counter {
     return this.appService.setCounter(counterName, setCounter);
+  }
+
+  @Get('/health')
+  getHealth(): any {
+    return { status: 'Counting is healthy' };
   }
 }
