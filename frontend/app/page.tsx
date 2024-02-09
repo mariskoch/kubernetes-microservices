@@ -8,6 +8,7 @@ import ModalBody from "@/components/ModalBody";
 import ModalFooter from "@/components/ModalFooter";
 import {useRouter} from "next/navigation";
 import {toast, Toaster} from "sonner";
+import CounterList from "@/components/custom/CounterList";
 
 export default function Home({searchParams}: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const show = searchParams?.show;
@@ -41,12 +42,17 @@ export default function Home({searchParams}: { searchParams: { [key: string]: st
     return (
         <div className={'flex justify-center'}>
             <Toaster richColors={true} position={"top-right"}/>
-            <Container classes={'mt-24'}>
-                <h1 className={'text-3xl font-bold'}>Counters</h1>
-                <Link href={'/?show=true'}
-                      className={'border-solid border-2 border-gray-800 rounded-md px-3 ml-auto hover:bg-gray-800 ' +
-                          'hover:text-gray-200 transition duration-200 flex items-center'}>New Counter
-                </Link>
+            <Container classes={'mt-24 flex-col'}>
+                <div className={'flex w-full basis-full'}>
+                    <h1 className={'text-3xl font-bold'}>Counters</h1>
+                    <Link href={'/?show=true'}
+                          className={'border-solid border-2 border-gray-800 rounded-md px-3 ml-auto hover:bg-gray-800 ' +
+                              'hover:text-gray-200 transition duration-200 flex items-center'}>New Counter
+                    </Link>
+                </div>
+                <div className={'flex basis-full justify-center mt-12'}>
+                    <CounterList modalShow={show === 'true'}/>
+                </div>
             </Container>
 
             {show && (<Modal show={Boolean(show)} title={'Create a Counter'}>
