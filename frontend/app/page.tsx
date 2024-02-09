@@ -7,6 +7,7 @@ import React from "react";
 import ModalBody from "@/components/ModalBody";
 import ModalFooter from "@/components/ModalFooter";
 import {useRouter} from "next/navigation";
+import {toast, Toaster} from "sonner";
 
 export default function Home({searchParams}: { searchParams: { [key: string]: string | string[] | undefined } }) {
     const show = searchParams?.show;
@@ -19,20 +20,27 @@ export default function Home({searchParams}: { searchParams: { [key: string]: st
     function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
         const data = Object.fromEntries(new FormData(event.target as HTMLFormElement));
-        console.log(data);
-        fetch('/api/submit', {
+        fetch('/api/counter/create', {
             method: 'POST',
-        }).then((res) => {
-
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }).then(async (res) => {
+            if (res.ok) {
+                navigateHome();
+                toast.success('Counter created successfully');
+            } else {
+                toast.error((await res.json()).message);
+            }
         }).catch((err) => {
-
+            toast.error('Could not connect to backend');
         });
-
-        //navigateHome();
     }
 
     return (
         <div className={'flex justify-center'}>
+            <Toaster richColors={true} position={"top-right"}/>
             <Container classes={'mt-24'}>
                 <h1 className={'text-3xl font-bold'}>Counters</h1>
                 <Link href={'/?show=true'}
@@ -49,7 +57,7 @@ export default function Home({searchParams}: { searchParams: { [key: string]: st
                                 Counter Name:
                             </div>
                             <div className={'flex items-center col-span-8'}>
-                                <input type={'text'} name={'counterName'}
+                                <input type={'text'} name={'name'}
                                        className={'border-solid border-[1px] border-gray-600 rounded-md p-2 w-full'}/>
                             </div>
                         </div>
