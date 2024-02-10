@@ -63,7 +63,7 @@ export class AppController {
   }
 
   @Delete('/delete/:name')
-  deleteCounter(@Param('name') counterName: string): void {
+  deleteCounter(@Param('name') counterName: string): { deleted: string } {
     return this.appService.deleteCounter(counterName);
   }
 }
