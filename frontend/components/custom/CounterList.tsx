@@ -47,6 +47,28 @@ export default function CounterList({modalShow}: { modalShow: boolean }) {
         });
     }
 
+    function handleSet(event: React.MouseEvent<HTMLButtonElement>) {
+        const index = parseInt(event.currentTarget.id.split('-')[1]);
+        const value = (document.getElementById(`input-${index}`) as HTMLInputElement).value;
+
+        fetch(`/api/counter/set/${counters[index].name}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({count: parseInt(value)}),
+        }).then(async (res) => {
+            if (res.ok) {
+                setI(i + 1);
+                toast.success('Counter updated successfully');
+            } else {
+                toast.error((await res.json()).message);
+            }
+        }).catch((err) => {
+            toast.error('Could not connect to backend');
+        });
+    }
+
     return (
         <table className={'w-1/2'}>
             <thead>
@@ -63,7 +85,8 @@ export default function CounterList({modalShow}: { modalShow: boolean }) {
                     <td>
                         <button id={`button1-${index}`} onClick={handleClick} type={'button'} className={'border-solid border-2 w-[50px] rounded-md border-gray-800 hover:bg-gray-800 hover:text-gray-200 transition duration-200 mr-1'}>Inc.</button>
                         <button id={`button2-${index}`} onClick={handleClick} className={'border-solid border-2 w-[50px] rounded-md border-gray-800 hover:bg-gray-800 hover:text-gray-200 transition duration-200 mr-1'}>Dec.</button>
-                        <input id={`input-${index}`} type={'number'} className={'border-solid border-2 w-[75px] rounded-md border-gray-800 text-sm h-[27.2px] text-center'} defaultValue={'1'}></input>
+                        <input id={`input-${index}`} type={'number'} className={'border-solid border-2 w-[75px] rounded-md border-gray-800 text-sm h-[27.2px] text-center mr-1'} defaultValue={'1'}></input>
+                        <button id={`button3-${index}`} onClick={handleSet} className={'border-solid border-2 w-[50px] rounded-md border-gray-800 hover:bg-gray-800 hover:text-gray-200 transition duration-200 mr-1'}>Set</button>
                     </td>
                 </tr>
             ))}
