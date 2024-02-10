@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { AppService } from './app.service';
 import CreateCounterDto from './dtos/create-counter.dto';
 import Counter from '../../../shared/counter.interface';
@@ -52,5 +60,10 @@ export class AppController {
   @Get('/health')
   getHealth(): any {
     return { status: 'Counting is healthy' };
+  }
+
+  @Delete('/delete/:name')
+  deleteCounter(@Param('name') counterName: string): void {
+    return this.appService.deleteCounter(counterName);
   }
 }

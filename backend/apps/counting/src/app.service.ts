@@ -76,6 +76,14 @@ export class AppService {
     return counter;
   }
 
+  deleteCounter(name: string): void {
+    const counter = this.counters.find((counter) => counter.name === name);
+    if (!counter) {
+      throw new NotFoundException(`Counter with name ${name} does not exist`);
+    }
+    this.counters = this.counters.filter((counter) => counter.name !== name);
+  }
+
   private doesCounterAlreadyExistByName(name: string): boolean {
     return this.counters.some((counter) => counter.name === name);
   }
