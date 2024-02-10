@@ -3,16 +3,33 @@
 import Container from "@/components/Container";
 import Link from "next/link";
 import Modal from "@/components/Modal";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import ModalBody from "@/components/ModalBody";
 import ModalFooter from "@/components/ModalFooter";
 import {useRouter} from "next/navigation";
 import {toast, Toaster} from "sonner";
 import CounterList from "@/components/custom/CounterList";
 
-export default function Home({searchParams}: { searchParams: { [key: string]: string | string[] | undefined } }) {
+export default function Home({searchParams}: { searchParams: { [_key: string]: string | string[] | undefined } }) {
     const show = searchParams?.show;
     const router = useRouter();
+
+    const [avg, setAvg] = useState<number>(0);
+    const [sum, setSum] = useState<number>(0);
+    const [min, setMin] = useState<number | undefined>(undefined);
+    const [max, setMax] = useState<number | undefined>(undefined);
+
+    useEffect(() => {
+        fetch('/api/statistics')
+            .then(response => response.json())
+            .then(data => {
+                setAvg(data.average);
+                setSum(data.sum);
+                setMin(data.min);
+                setMax(data.max);
+            })
+            .catch(error => toast.error('Could not connect to backend'));
+    }, [show]);
 
     const navigateHome = () => {
         router.push('/');
@@ -34,13 +51,13 @@ export default function Home({searchParams}: { searchParams: { [key: string]: st
             } else {
                 toast.error((await res.json()).message);
             }
-        }).catch((err) => {
+        }).catch((_err) => {
             toast.error('Could not connect to backend');
         });
     }
 
     return (
-        <div className={'flex justify-center'}>
+        <div className={'flex flex-col justify-center w-full items-center'}>
             <Toaster richColors={true} position={"top-right"}/>
             <Container classes={'mt-24 flex-col'}>
                 <div className={'flex w-full basis-full'}>
@@ -52,6 +69,28 @@ export default function Home({searchParams}: { searchParams: { [key: string]: st
                 </div>
                 <div className={'flex basis-full justify-center mt-12'}>
                     <CounterList modalShow={show === 'true'}/>
+                </div>
+            </Container>
+
+            <Container classes={'flex-col mt-12'}>
+                <h1 className={'text-3xl font-bold'}>Statistics</h1>
+                <div className={'grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mt-3'}>
+                    <div className={'grid grid-cols-12 gap-2 items-center'}>
+                        <div className={'col-span-2 md:col-span-3'}>Avg.:</div>
+                        <div className={'col-span-10 md:col-span-9 w-full bg-gray-800 text-white text-center rounded-xl py-1'}>{avg}</div>
+                    </div>
+                    <div className={'grid grid-cols-12 gap-2 items-center'}>
+                        <div className={'col-span-2 md:col-span-3'}>Sum:</div>
+                        <div className={'col-span-10 md:col-span-9 w-full bg-gray-800 text-white text-center rounded-xl py-1'}>{sum}</div>
+                    </div>
+                    <div className={'grid grid-cols-12 gap-2 items-center'}>
+                        <div className={'col-span-2 md:col-span-3'}>Min:</div>
+                        <div className={'col-span-10 md:col-span-9 w-full bg-gray-800 text-white text-center rounded-xl py-1'}>{min ?? 'NaN'}</div>
+                    </div>
+                    <div className={'grid grid-cols-12 gap-2 items-center'}>
+                        <div className={'col-span-2 md:col-span-3'}>Max:</div>
+                        <div className={'col-span-10 md:col-span-9 w-full bg-gray-800 text-white text-center rounded-xl py-1'}>{max ?? 'NaN'}</div>
+                    </div>
                 </div>
             </Container>
 

@@ -27,6 +27,13 @@ export class StatisticsService {
     });
   }
 
+  async getSum(): Promise<{ sum: number }> {
+    const counters = await this.fetchCounters();
+    if (!counters.length) return { sum: 0 };
+    const sum = counters.reduce((acc, counter) => acc + counter.count, 0);
+    return { sum };
+  }
+
   private async fetchCounters(): Promise<Counter[]> {
     try {
       const counters = await fetch('http://counting/counters');

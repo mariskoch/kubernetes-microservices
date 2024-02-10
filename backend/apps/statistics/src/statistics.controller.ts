@@ -11,6 +11,11 @@ export class StatisticsController {
     return await this.statisticsService.getAverage();
   }
 
+  @Get('/sum')
+  async getSum(): Promise<{ sum: number }> {
+    return await this.statisticsService.getSum();
+  }
+
   @Get('/max')
   async getMax(): Promise<Counter> {
     return await this.statisticsService.getExtreme('MAX');
