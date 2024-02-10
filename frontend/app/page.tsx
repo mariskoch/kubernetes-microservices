@@ -44,9 +44,9 @@ export default function Home({searchParams}: { searchParams: { [_key: string]: s
             .catch(_error => toast.error('Could not connect to backend'));
     }, [show, i]);
 
-    const navigateHome = () => {
+    function navigateHome() {
         router.push('/');
-    };
+    }
 
     function handleModalSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault();
