@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
-import Counter from '../../counting/src/counter.interface';
+import Counter from '../../../shared/counter.interface';
 
 @Controller()
 export class StatisticsController {
@@ -11,6 +11,11 @@ export class StatisticsController {
     return await this.statisticsService.getAverage();
   }
 
+  @Get('/sum')
+  async getSum(): Promise<{ sum: number }> {
+    return await this.statisticsService.getSum();
+  }
+
   @Get('/max')
   async getMax(): Promise<Counter> {
     return await this.statisticsService.getExtreme('MAX');
@@ -19,5 +24,10 @@ export class StatisticsController {
   @Get('/min')
   async getMin(): Promise<Counter> {
     return await this.statisticsService.getExtreme('MIN');
+  }
+
+  @Get('/health')
+  getHealth(): any {
+    return { status: 'Statistics is healthy' };
   }
 }

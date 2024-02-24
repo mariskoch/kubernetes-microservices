@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import CreateCounterDto from './dtos/create-counter.dto';
-import Counter from './counter.interface';
+import Counter from '../../../shared/counter.interface';
 import IncrementCounterDto from './dtos/increment-counter.dto';
 import DecrementCounterDto from './dtos/decrement-counter.dto';
 import SetCounterDto from './dtos/set-counter.dto';
@@ -74,6 +74,15 @@ export class AppService {
     }
     counter.count = Math.floor(setCounterOptions.count);
     return counter;
+  }
+
+  deleteCounter(name: string): { deleted: string } {
+    const counter = this.counters.find((counter) => counter.name === name);
+    if (!counter) {
+      throw new NotFoundException(`Counter with name ${name} does not exist`);
+    }
+    this.counters = this.counters.filter((counter) => counter.name !== name);
+    return { deleted: name };
   }
 
   private doesCounterAlreadyExistByName(name: string): boolean {

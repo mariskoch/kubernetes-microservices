@@ -3,7 +3,7 @@ import {
   InternalServerErrorException,
   NotFoundException,
 } from '@nestjs/common';
-import Counter from '../../counting/src/counter.interface';
+import Counter from '../../../shared/counter.interface';
 
 @Injectable()
 export class StatisticsService {
@@ -27,10 +27,16 @@ export class StatisticsService {
     });
   }
 
+  async getSum(): Promise<{ sum: number }> {
+    const counters = await this.fetchCounters();
+    if (!counters.length) return { sum: 0 };
+    const sum = counters.reduce((acc, counter) => acc + counter.count, 0);
+    return { sum };
+  }
+
   private async fetchCounters(): Promise<Counter[]> {
     try {
-      // TODO: replace with call to ClusterIP service of counting
-      const counters = await fetch('http://localhost:3001/counters');
+      const counters = await fetch('http://counting/counters');
       return (await counters.json()) as Counter[];
     } catch (error) {
       throw new InternalServerErrorException('Could not fetch counters');
